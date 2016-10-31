@@ -1,0 +1,75 @@
+import random 
+
+def BattleShip():
+    x = 10
+    y = 10
+    
+    #***************************************PLAYER SETUP***************************************************
+
+    #**************************************COMPUTER SETUP**************************************************
+    computerFleet = [5, 4, 3, 2, 2, 1, 1]
+
+    computerBoardVisible = [["0" for i in range(y)] for j in range(y)]
+    computerBoardHidden = [["0" for i in range(y)] for j in range(y)]
+
+    numShips = 0
+
+    while numShips < len(computerFleet):
+        w = random.randint(0, x-1)
+        z = random.randint(0, y-1)
+        p = random.randint(1, 4)
+        clear = True
+        if computerBoardHidden[w][z] == 0:
+            if p == 1:
+                if w + computerFleet[numShips] > x:
+                    clear = False
+            elif p == 2:
+                if z + computerFleet[numShips] > y:
+                    clear = False
+            elif p == 3:
+                if w - computerFleet[numShips] > x:
+                    clear = False
+            elif p == 4:
+                if z - computerFleet[numShips] > y:
+                    clear = False
+            if clear == True: 
+                for f in range (1, computerFleet[numShips]):
+                    if p == 1:
+                        if ((computerBoardHidden[w + f + 1][z] != 0) or (computerBoardHidden[w + f][z + 1] != 0) or (computerBoardHidden[w + f][z - 1] != 0)):
+                            clear = False
+                    elif p == 2:
+                        if ((computerBoardHidden[w][z + f + 1] != 0) or (computerBoardHidden[w - 1][z+f] != 0) or (computerBoardHidden[w + 1][z+f] != 0)):
+                            clear = False
+                    elif p == 3:
+                        if ((computerBoardHidden[w - f - 1][z] != 0) or (computerBoardHidden[w - f][z + 1] != 0) or (computerBoardHidden[w - f][z - 1] != 0)):
+                            clear = False
+                    elif p == 4:
+                        if ((computerBoardHidden[w][z - f -1] != 0) or (computerBoardHidden[w + 1][z] != 0) or (computerBoardHidden[w - 1][z] != 0)):
+                            clear = False
+        if clear == True:
+            computerBoardHidden[w][z] = numShips + 1
+
+        for g in range(1, computerFleet[numShips]):
+            if p == 1:
+                computerBoardHidden[w + g][z] = numShips + 1
+            elif p == 2:
+                computerBoardHidden[w][z + g] = numShips + 1
+            elif p == 3:
+                computerBoardHidden[w - g][z] = numShips + 1
+            elif p == 4:
+                computerBoardHidden[w][z - g] = numShips + 1
+        if clear == True:
+            numShips += 1
+
+        for a in range(x):
+            print ''
+            for b in range(y):
+                print computerBoardHidden[a][b],
+        print ''
+                   
+    #*****************************************GAME*********************************************************
+
+    playerHits = 0
+    computerHits = 0
+
+    
